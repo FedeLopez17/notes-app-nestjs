@@ -36,7 +36,12 @@ export class NotesService {
 
   async create(data: CreateNoteDTO): Promise<NoteResponseDTO> {
     const createdNote = await this.prisma.note.create({
-      data,
+      data: {
+        ...data,
+        categories: data.categories
+          ? { connect: data.categories.map((id) => ({ id })) }
+          : undefined,
+      },
       include: { categories: true },
     });
     return NoteResponseDTO.fromPrisma(createdNote);
