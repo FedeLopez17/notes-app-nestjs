@@ -19,11 +19,12 @@ model Note {
   content   String
   isArchived Boolean @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   categories Category[] @relation("NoteCategories")
 }
 
 model Category {
   id Int @id @default(autoincrement())
-  title String
+  title String @unique
   notes Note[] @relation("NoteCategories")
 }
