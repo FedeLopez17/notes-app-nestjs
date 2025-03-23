@@ -7,17 +7,21 @@ export class NoteResponseDTO {
   isArchived: boolean;
   categories: number[];
   createdAt: string;
+  updatedAt: string;
 
   static fromPrisma(
     note: Note & { categories: { id: number }[] },
   ): NoteResponseDTO {
     const response = new NoteResponseDTO();
+
     response.id = note.id;
     response.title = note.title;
     response.content = note.content;
     response.isArchived = note.isArchived;
     response.createdAt = note.createdAt.toISOString();
+    response.updatedAt = (note.updatedAt as Date).toISOString();
     response.categories = note.categories.map((category) => category.id) || [];
+
     return response;
   }
 }
