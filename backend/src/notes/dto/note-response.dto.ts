@@ -5,7 +5,7 @@ export class NoteResponseDTO {
   title: string;
   content: string;
   isArchived: boolean;
-  categoryIds: number[];
+  categories: number[];
   createdAt: string;
 
   static fromPrisma(
@@ -17,7 +17,7 @@ export class NoteResponseDTO {
     response.content = note.content;
     response.isArchived = note.isArchived;
     response.createdAt = note.createdAt.toISOString();
-    response.categoryIds = note.categories.map((category) => category.id) || [];
+    response.categories = note.categories.map((category) => category.id) || [];
     return response;
   }
 }

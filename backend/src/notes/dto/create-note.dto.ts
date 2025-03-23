@@ -23,5 +23,5 @@ export class CreateNoteDTO {
   @IsOptional()
   @IsArray()
   @IsInt({ each: true })
-  categoryIds?: number[];
+  categories?: number[];
 }
