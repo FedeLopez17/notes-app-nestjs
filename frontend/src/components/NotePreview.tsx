@@ -28,14 +28,14 @@ function NotePreview(props: Props) {
 
   return (
     <Link to={`/notes/${note.id}`}>
-      <section className=" w-full  flex flex-col gap-2 bg-amber-50 px-4 py-6 rounded-lg hover:shadow-xl transition-shadow">
+      <section className=" w-full  flex flex-col gap-2 bg-blue-50 px-4 py-6 rounded-lg hover:shadow-xl transition-shadow">
         <section>
-          <h2>{note.title}</h2>
-          <p>Last updated: {formattedLastUpdateDate}</p>
+          <h2 className="font-bold text-sm">{note.title}</h2>
+          <p className="opacity-80">Last updated: {formattedLastUpdateDate}</p>
         </section>
         <section className="flex gap-2 self-end">
           <ArchiveUnarchiveIcon
-            className=" cursor-pointer"
+            className="cursor-pointer"
             title={archiveUnarchiveTitle}
             onClick={(e) => {
               e.preventDefault();

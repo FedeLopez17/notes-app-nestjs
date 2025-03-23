@@ -6,7 +6,7 @@ const Header: React.FC = () => {
   const isArchived = location.pathname.includes("archived");
 
   return (
-    <header className="flex items-end justify-between mb-6">
+    <header className="flex items-end justify-between mb-8">
       <h1 className=" text-4xl font-bold">
         {isArchived ? "Archived Notes" : "Active Notes"}
       </h1>

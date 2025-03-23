@@ -3,6 +3,12 @@ import { Note } from "../types/Note";
 import { Category } from "../types/Category";
 import { NoteUpdateDTO } from "../types/NoteUpdateDTO";
 import { NoteCreateDTO } from "../types/NoteCreateDTO";
+import {
+  BiArrowToLeft,
+  BiArrowToRight,
+  BiSolidPurchaseTagAlt,
+  BiX,
+} from "react-icons/bi";
 
 interface Props {
   mode: "create" | "update";
@@ -89,11 +95,11 @@ const UpdateCreateNoteModal = ({
 
   return (
     <section
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black/45 flex items-center justify-center z-50"
       onClick={handleBackdropClick}
     >
       <section
-        className="bg-white p-6 rounded shadow-md max-w-2xl w-full"
+        className="bg-white p-6 rounded shadow-md max-w-2xl w-full -mt-40"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl mb-4">
@@ -129,56 +135,70 @@ const UpdateCreateNoteModal = ({
             />
           </section>
 
-          <section className="mb-4 flex gap-4">
-            <section>
-              <h3 className="text-lg mb-2">Available Categories</h3>
-              {categories
-                .filter(
-                  (category) =>
-                    !selectedCategories.some(
-                      (selectedCategory) => selectedCategory.id === category.id
-                    )
-                )
-                .map((category) => (
+          <section className="">
+            <section className="flex w-full">
+              <h3 className=" mb-2 flex-1 block text-sm font-medium">
+                Available Categories
+              </h3>
+              <h3 className=" mb-2 flex-1 block text-sm font-medium">
+                Selected Categories
+              </h3>
+            </section>
+            <section className="mb-4 flex gap-4 bg-red-gray-200 w-full h-50 overflow-y-scroll">
+              <section className=" p-2 flex-1 flex flex-col gap-2 h-fit">
+                {categories
+                  .filter(
+                    (category) =>
+                      !selectedCategories.some(
+                        (selectedCategory) =>
+                          selectedCategory.id === category.id
+                      )
+                  )
+                  .map((category) => (
+                    <section
+                      key={category.id}
+                      className="flex items-center justify-start bg-gray-200 p-1"
+                    >
+                      <BiSolidPurchaseTagAlt className="text-md opacity-70 mr-2" />
+                      <p>{category.title}</p>
+                      <BiX
+                        onClick={() => handleDeleteCategory(category.id)}
+                        className="text-xl cursor-pointer opacity-70 hover:opacity-100 ml-auto mr-2"
+                        title="Delete"
+                      />
+
+                      <BiArrowToRight
+                        onClick={() => handleSelectCategory(category)}
+                        className="text-xl cursor-pointer opacity-70 hover:opacity-100"
+                        title="Select"
+                      />
+                    </section>
+                  ))}
+              </section>
+
+              <section className=" p-2 flex-1 flex flex-col gap-2 h-fit">
+                {selectedCategories.map((category) => (
                   <section
                     key={category.id}
-                    className="flex items-center justify-between"
+                    className="flex items-center justify-start gap-1 bg-gray-200 p-1"
                   >
-                    <p>{category.title}</p>
-                    <button
-                      onClick={() => handleDeleteCategory(category.id)}
-                      className="p-2 bg-red-500 text-white rounded"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => handleSelectCategory(category)}
-                      className="p-2 bg-gray-200 rounded mr-2"
-                    >
-                      Select
-                    </button>
+                    <BiArrowToLeft
+                      onClick={() => handleUnselectCategory(category)}
+                      className="text-xl cursor-pointer opacity-70 hover:opacity-100"
+                      title="Unselect"
+                    />
+                    <span className="mr-2">{category.title}</span>
                   </section>
                 ))}
-            </section>
-
-            <section>
-              <h3 className="text-lg mb-2">Selected Categories</h3>
-              {selectedCategories.map((category) => (
-                <section key={category.id} className="flex items-center">
-                  <span className="mr-2">{category.title}</span>
-                  <button
-                    onClick={() => handleUnselectCategory(category)}
-                    className="p-2 bg-orange-500 text-white rounded"
-                  >
-                    Unselect
-                  </button>
-                </section>
-              ))}
+              </section>
             </section>
           </section>
 
           <section className="mb-4">
-            <label htmlFor="newCategory" className="block text-sm font-medium">
+            <label
+              htmlFor="newCategory"
+              className="block text-sm font-medium mb-2"
+            >
               New Category:
             </label>
             <div className="flex gap-2">
@@ -192,7 +212,7 @@ const UpdateCreateNoteModal = ({
               />
               <button
                 onClick={handleAddCategory}
-                className="p-2 bg-green-500 text-white rounded"
+                className="p-2 bg-green-600 text-white rounded cursor-pointer"
               >
                 Add
               </button>
@@ -215,13 +235,13 @@ const UpdateCreateNoteModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-black rounded"
+              className="px-4 py-2 bg-gray-300 text-black rounded cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
             >
               {mode === "create" ? "Add" : "Save Changes"}
             </button>

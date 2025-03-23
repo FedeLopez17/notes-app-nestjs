@@ -6,6 +6,7 @@ import { Category } from "../types/Category";
 import UpdateNoteModal from "../components/UpdateCreateNoteModal";
 import { NoteUpdateDTO } from "../types/NoteUpdateDTO";
 import { NoteCreateDTO } from "../types/NoteCreateDTO";
+import { BiPlus } from "react-icons/bi";
 
 interface Props {
   isArchivedNotes?: boolean;
@@ -224,7 +225,7 @@ function Notes({ isArchivedNotes = false }: Props) {
   }
 
   return (
-    <>
+    <section className="w-5/6 mx-auto">
       {(noteToUpdate || showCreateModal) && (
         <UpdateNoteModal
           mode={noteToUpdate ? "update" : "create"}
@@ -245,28 +246,42 @@ function Notes({ isArchivedNotes = false }: Props) {
         />
       )}
 
-      {!isArchivedNotes && <button onClick={openCreateModal}>Add Note</button>}
+      <div className="mb-4 flex justify-between items-end">
+        <section>
+          <label htmlFor="categoryFilter" className="block text-sm font-medium">
+            Filter by Category:
+          </label>
+          <select
+            id="categoryFilter"
+            value={selectedCategory || ""}
+            onChange={handleCategoryChange}
+            className="w-fit p-2 border rounded text-sm"
+          >
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.title}>
+                {category.title}
+              </option>
+            ))}
+          </select>
+        </section>
 
-      <div className="mb-4">
-        <label htmlFor="categoryFilter" className="block text-sm font-medium">
-          Filter by Category:
-        </label>
-        <select
-          id="categoryFilter"
-          value={selectedCategory || ""}
-          onChange={handleCategoryChange}
-          className="w-fit p-2 border rounded text-sm"
-        >
-          <option value="">All Categories</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.title}>
-              {category.title}
-            </option>
-          ))}
-        </select>
+        {!isArchivedNotes && (
+          <button
+            onClick={openCreateModal}
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer flex gap-1 text-md justify-center items-center"
+          >
+            <BiPlus className="text-lg" />
+            Add Note
+          </button>
+        )}
       </div>
 
-      <div className="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-4 w-5/6 mx-auto mt-2">
+      {!notes.length && (
+        <p className="flex justify-center">No notes yet. Add some!</p>
+      )}
+
+      <div className="grid grid-cols-[repeat(auto-fit,_250px)] gap-4 mt-2 justify-between">
         {notes.map((note) => (
           <NotePreview
             isArchived={isArchivedNotes}
@@ -278,7 +293,7 @@ function Notes({ isArchivedNotes = false }: Props) {
           />
         ))}
       </div>
-    </>
+    </section>
   );
 }
 
