@@ -8,8 +8,15 @@ import { UpdateNoteDTO } from './dto/update-note.dto';
 export class NotesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAll(): Promise<NoteResponseDTO[]> {
+  async getAll(
+    category?: string,
+    isArchived?: boolean,
+  ): Promise<NoteResponseDTO[]> {
     const notes = await this.prisma.note.findMany({
+      where: {
+        categories: category ? { some: { title: category } } : undefined,
+        isArchived: isArchived === undefined ? false : isArchived,
+      },
       include: { categories: true },
     });
 

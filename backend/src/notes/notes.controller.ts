@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDTO } from './dto/create-note.dto';
@@ -17,8 +18,12 @@ export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
   @Get()
-  async getAll() {
-    return this.notesService.getAll();
+  async getAll(
+    @Query('category') category?: string,
+    @Query('archived') archived?: string,
+  ) {
+    const isArchived = archived ? archived === 'true' : undefined;
+    return this.notesService.getAll(category, isArchived);
   }
 
   @Get(':id')
