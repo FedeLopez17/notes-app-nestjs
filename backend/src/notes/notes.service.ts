@@ -36,15 +36,6 @@ export class NotesService {
   }
 
   async update(id: number, data: UpdateNoteDTO): Promise<NoteResponseDTO> {
-    console.log(
-      JSON.stringify({
-        ...data,
-        categories: data.categories
-          ? { set: data.categories.map((id) => ({ id })) }
-          : undefined,
-      }),
-    );
-
     try {
       const updatedNote = await this.prisma.note.update({
         where: { id },
