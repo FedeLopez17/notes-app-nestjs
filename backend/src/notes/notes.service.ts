@@ -53,6 +53,7 @@ export class NotesService {
         where: { id },
         data: {
           ...data,
+          updatedAt: new Date(), // Ensure updatedAt is set when only categories change
           categories: data.categories
             ? { set: data.categories.map((id) => ({ id })) }
             : undefined,
