@@ -39,7 +39,12 @@ export class NotesService {
     try {
       const updatedNote = await this.prisma.note.update({
         where: { id },
-        data,
+        data: {
+          ...data,
+          categories: data.categories
+            ? { set: data.categories.map((id) => ({ id })) }
+            : undefined,
+        },
         include: { categories: true },
       });
       return NoteResponseDTO.fromPrisma(updatedNote);
