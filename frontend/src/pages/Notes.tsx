@@ -31,6 +31,8 @@ function Notes({ isArchivedNotes = false }: Props) {
   const openDeleteModal = (id: number) => setNoteToDelete(id);
   const closeDeleteModal = () => setNoteToDelete(null);
 
+  const API_BASE_URL = "https://notes-app-nestjs-production.up.railway.app/";
+
   const fetchNotes = useCallback(async () => {
     try {
       const categoryQuery = selectedCategory
@@ -38,7 +40,7 @@ function Notes({ isArchivedNotes = false }: Props) {
         : "";
 
       const response = await fetch(
-        `http://localhost:3000/notes?archived=${isArchivedNotes}${categoryQuery}`
+        `${API_BASE_URL}notes?archived=${isArchivedNotes}${categoryQuery}`
       );
 
       if (!response.ok) {
@@ -50,11 +52,11 @@ function Notes({ isArchivedNotes = false }: Props) {
     } catch {
       setError("Error fetching notes");
     }
-  }, [isArchivedNotes, selectedCategory]);
+  }, [isArchivedNotes, selectedCategory, API_BASE_URL]);
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:3000/categories");
+      const response = await fetch(`${API_BASE_URL}categories`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch categories");
@@ -65,7 +67,7 @@ function Notes({ isArchivedNotes = false }: Props) {
     } catch {
       setError("Error fetching categories");
     }
-  };
+  }, [API_BASE_URL]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,7 +79,7 @@ function Notes({ isArchivedNotes = false }: Props) {
     };
 
     fetchData();
-  }, [fetchNotes]);
+  }, [fetchNotes, fetchCategories]);
 
   useEffect(() => {
     setSelectedCategory(null);
@@ -85,16 +87,13 @@ function Notes({ isArchivedNotes = false }: Props) {
 
   const handleUpdate = async (updatedNote: NoteUpdateDTO) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/notes/${updatedNote.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedNote),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}notes/${updatedNote.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedNote),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to update note");
@@ -109,7 +108,7 @@ function Notes({ isArchivedNotes = false }: Props) {
 
   const handleCreate = async (newNote: NoteCreateDTO) => {
     try {
-      const response = await fetch("http://localhost:3000/notes", {
+      const response = await fetch(`${API_BASE_URL}notes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -130,7 +129,7 @@ function Notes({ isArchivedNotes = false }: Props) {
 
   const handleArchive = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:3000/notes/${id}`, {
+      const response = await fetch(`${API_BASE_URL}notes/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isArchived: !isArchivedNotes }),
@@ -148,12 +147,9 @@ function Notes({ isArchivedNotes = false }: Props) {
 
   const handleDeletion = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/notes/${noteToDelete}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}notes/${noteToDelete}`, {
+        method: "DELETE",
+      });
 
       if (!response.ok) {
         throw new Error("Failed to delete the note");
@@ -170,7 +166,7 @@ function Notes({ isArchivedNotes = false }: Props) {
 
   const handleAddCategory = async (newCategory: string) => {
     try {
-      const response = await fetch("http://localhost:3000/categories", {
+      const response = await fetch(`${API_BASE_URL}categories`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -191,12 +187,9 @@ function Notes({ isArchivedNotes = false }: Props) {
 
   const handleDeleteCategory = async (categoryId: number) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/categories/${categoryId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}categories/${categoryId}`, {
+        method: "DELETE",
+      });
 
       if (!response.ok) {
         throw new Error("Failed to delete category");

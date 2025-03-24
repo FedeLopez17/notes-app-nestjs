@@ -7,10 +7,12 @@ function NoteDetail() {
   const [note, setNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const API_BASE_URL = "https://notes-app-nestjs-production.up.railway.app/";
+
   useEffect(() => {
     async function fetchNote() {
       try {
-        const response = await fetch(`http://localhost:3000/notes/${id}`);
+        const response = await fetch(`${API_BASE_URL}notes/${id}`);
         if (!response.ok) throw new Error("Note not found");
         const data: Note = await response.json();
         setNote(data);
@@ -22,7 +24,7 @@ function NoteDetail() {
     }
 
     fetchNote();
-  }, [id]);
+  }, [API_BASE_URL, id]);
 
   if (loading) return <p>Loading...</p>;
   if (!note) return <p>Note not found.</p>;
