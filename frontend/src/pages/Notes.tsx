@@ -274,7 +274,11 @@ function Notes({ isArchivedNotes = false }: Props) {
         <p className="flex justify-center">No notes yet. Add some!</p>
       )}
 
-      <div className="grid grid-cols-[repeat(auto-fit,_250px)] gap-4 mt-2 justify-between">
+      <div
+        className={`grid grid-cols-[repeat(auto-fit,_250px)] gap-4 mt-6 ${
+          notes.length > 3 ? "justify-between" : "justify-start"
+        }`}
+      >
         {notes.map((note) => (
           <NotePreview
             isArchived={isArchivedNotes}
