@@ -7,7 +7,7 @@ import Notes from "./pages/Notes.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/notes-app-nestjs">
       <Routes>
         <Route element={<LayoutWithHeader />}>
           <Route path="/" element={<Notes />} />
