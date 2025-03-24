@@ -1,6 +1,10 @@
 # Ensolvers Notes App Challenge
 
+## Description
 This is a full-stack application consisting of a React frontend and a NestJS backend, with PostgreSQL as the database. The project also includes Docker for containerization.
+
+## Live Deployed Version
+### 🔗 [Visit the live site here](https://fedelopez17.github.io/notes-app-nestjs/)
 
 ## Prerequisites
 
